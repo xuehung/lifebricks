@@ -4,61 +4,119 @@
     <meta charset="utf-8" />
     <title>Life Bricks</title>
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.1.1/css/foundation.css">
 	<style>
-		p#cf7_controls {
-		  text-align:center;
-		}
-		#cf7_controls span {
-		  padding-right:2em;
-		  cursor:pointer;
-		}
-		#cf7 {
-		  position:relative;
-		  width:100%;
-		  margin:0 auto 10px;
-		}
-		#cf7 div.header-img {
-		  position:absolute;
-		  left:0;
-		  -webkit-transition: opacity 1s ease-in-out;
-		  -moz-transition: opacity 1s ease-in-out;
-		  -o-transition: opacity 1s ease-in-out;
-		  transition: opacity 1s ease-in-out;
-		  opacity:0;
-		  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-		  filter: alpha(opacity=0);
-		  height: 600px;
-		  width: 100%;
-		  background-size: cover;
-		}
+	    body, html {
+		height: 100%;
+	    }
+	    #top {
+		position: absolute;
+		left: 80px;
+		top: 80px;
+		z-index: 20;
+	    }
 
-		#cf7 div.opaque {
-		  opacity:1;
-		  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-		  filter: alpha(opacity=1);
-		}
+	    #email-div {
+		position: absolute;
+		left: 80px;
+		top: 300px;
+		z-index: 20;
+	    }
+
+	    #email-div p {
+		color: #fff;
+	    }
+
+	    #top .title {
+		font-size: 80px;
+		font-weight: bold;
+		color: #ff6600;
+	    }
+	    #top .subtitle {
+		font-size: 30px;
+		font-weight: bold;
+		color: #ffffff;
+	    }
+	    p#cf7_controls {
+		text-align:center;
+	    }
+	    #cf7_controls span {
+		padding-right:2em;
+		cursor:pointer;
+	    }
+	    #cf7 {
+		position:relative;
+		width:100%;
+		height: 100%;
+	    }
+	    #cf7 div.header-img {
+		position:absolute;
+		left:0;
+		-webkit-transition: opacity 1s ease-in-out;
+		-moz-transition: opacity 1s ease-in-out;
+		-o-transition: opacity 1s ease-in-out;
+		transition: opacity 1s ease-in-out;
+		opacity:0;
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+		filter: alpha(opacity=0);
+		height: 100%;
+		width: 100%;
+		background-size: cover;
+	    }
+
+	    #cf7 div.opaque {
+		opacity:1;
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+		filter: alpha(opacity=1);
+	    }
 	</style>
-  </head>
-  <body>
-	
-	<div id="cf7" class="shadow">
-	  <div class="header-img opaque" style="background-image: url(img/a.jpg)"></div>
-	  <div class="header-img" style="background-image: url(img/c.jpg)"></div>
-	  <div class="header-img" style="background-image: url(img/d.jpg)"></div>
+    </head>
+    <body>
+	<div id="top">
+	    <h1 class="title">LifeBricks</h1>
+	    <h3 class="subtitle">Creating posibility through sharing</h3>
 	</div>
 
-	<script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+	<div id="email-div">
+	    <p>Leave your eamil for the most updated news of LifeBricks</p>
+	    <input id="email" type="text">
+	    <input id="name" type="text">
+	    <button id="submit-btn">Submit</button>
+	</div>
+
+	<div id="cf7" class="shadow">
+	    <div class="header-img opaque" style="background-image: url(img/a.jpg)"></div>
+	    <div class="header-img" style="background-image: url(img/c.jpg)"></div>
+	    <div class="header-img" style="background-image: url(img/d.jpg)"></div>
+	</div>
+
+	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
 	<script>
-		function cf() {
-			var active = $('#cf7 div.opaque');
-			var next = (active.next('div').length > 0) ? active.next() : $('#cf7 div:first');
-			$("#cf7 div").removeClass("opaque");
-			next.addClass("opaque");
-		}
-		
-		$(document).ready(function() {
-		  setInterval('cf()', 7000);
-		});
+	    function cf() {
+		var active = $('#cf7 div.opaque');
+		var next = (active.next('div').length > 0) ? active.next() : $('#cf7 div:first');
+		$("#cf7 div").removeClass("opaque");
+		next.addClass("opaque");
+	    }
+
+	    $(document).ready(function() {
+		setInterval('cf()', 7000);
+	    });
 	</script>
-  </body>
+	<script>
+	    var myDataRef = new Firebase('https://lifebricks.firebaseio.com/');
+	    $('#name').hide();
+	    $('#submit-btn').on("click", function(){
+		var email = $("#email").val();
+		var name = $("#name").val();
+		// this is used to prevent robot
+		if(name == "" && email != "") {
+		    myDataRef.push({date: (new Date()).toString(), email: email});
+		    alert("Thank you! We have received your email!");
+		    $("#email").val("");
+		}
+	    });
+	</script>
+    </body>
 </html>
