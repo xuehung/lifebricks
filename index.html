@@ -111,12 +111,12 @@ background-image: linear-gradient(to right, rgba(0, 0, 0, 0.65098) 0%, rgba(0, 0
         }
 
         $(document).ready(function() {
+          $('#name').hide();
           setInterval('cf()', 7000);
           });
         </script>
         <script>
           var myDataRef = new Firebase('https://lifebricks.firebaseio.com/');
-          $('#name').hide();
           $('#submit-btn').on("click", function(){
             var email = $("#email").val();
             var name = $("#name").val();
